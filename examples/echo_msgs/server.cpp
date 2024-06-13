@@ -35,10 +35,10 @@ int main(){
     printf("server fd: %d!  IP:%s Port:%d\n",serverSocket,inet_ntoa(serverAddress.sin_addr),ntohs(serverAddress.sin_port));
     cout << "[server] echo start successfully" << endl;
 
-    while(true){
+    // accepting connection request
+    int clientSocket = accept(serverSocket, nullptr, nullptr);
 
-        // accepting connection request
-        int clientSocket = accept(serverSocket, nullptr, nullptr);
+    while(true){
 
         // receiving data
         char buffer[1024] = { 0 };
@@ -47,7 +47,7 @@ int main(){
         cout << "Message from client: " << buffer << endl;
 
         // echo the msg
-        send(serverSocket, buffer, strlen(buffer), 0);
+        send(clientSocket, buffer, strlen(buffer), 0);
 
     }
 

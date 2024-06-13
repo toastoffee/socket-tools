@@ -11,6 +11,7 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 
 using namespace std;
 
@@ -25,17 +26,25 @@ int main(){
     serverAddress.sin_port = htons(8080);
     serverAddress.sin_addr.s_addr = INADDR_ANY;
 
+    printf("set server fd: %d!  IP:%s Port:%d\n", clientSocket, inet_ntoa(serverAddress.sin_addr), ntohs(serverAddress.sin_port));
+
     // sending connection request
     connect(clientSocket, (struct sockaddr*)&serverAddress,sizeof(serverAddress));
 
-    // sending data
-    const char* message = "Hello, server!";
-    send(clientSocket, message, strlen(message), 0);
+    while(true){
 
-    // receiving data
-    char buffer[1024] = { 0 };
-    recv(clientSocket, buffer, sizeof(buffer), 0);
+        string msg;
+        cin >> msg;
 
-    cout << "Message from server: " << buffer << endl;
+        // sending data
+
+        send(clientSocket, msg.c_str(), strlen(msg.c_str()), 0);
+
+        // receiving data
+        char buffer[1024] = { 0 };
+        recv(clientSocket, buffer, sizeof(buffer), 0);
+
+        cout << "[msg receive from server] " << buffer << endl;
+    }
 
 }
