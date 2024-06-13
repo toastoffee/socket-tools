@@ -14,5 +14,7 @@
 #define SOCKET_TOOLS_SOCKET_ENUM_H
 
 #include "enums/address_family.h"
+#include "enums/sock_type.h"
+
 
 #endif //SOCKET_TOOLS_SOCKET_ENUM_H
