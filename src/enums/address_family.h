@@ -16,7 +16,7 @@
 #include <sys/socket.h>
 
 /*
- * 指定 Socket 类的实例可以使用的寻址方案。
+ * 指定 Socket 类的实例可以使用的寻址方案
  */
 enum class AddressFamily : unsigned int {
     Unspecified     = AF_UNSPEC,            /* 未指定的地址族 */
