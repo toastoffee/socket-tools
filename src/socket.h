@@ -14,6 +14,7 @@
 #define SOCKET_TOOLS_SOCKET_H
 
 #include "socket_enum.h"
+#include "ip_end_point.hpp"
 
 #include <string>
 
@@ -23,17 +24,31 @@
 class Socket{
 
 public:
+
     Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType);
 
-    Socket(SocketType socketType, ProtocolType protocolType);
+    void Connect(std::string const &address, int port) const;
 
-    void Connect(std::string const &address, int port);
+    void Bind(IPEndPoint localEndPoint) const;
 
-    int Send(const void* buffer, int size, int socketFlags);
+    void Listen(int backlog) const;
+
+    Socket Accept() const;
+
+    int Send(const void* buffer, int len, SocketFlags socketFlags) const;
+
+    int Receive(const void* buffer, int maxLen, SocketFlags socketFlags) const;
+
+    void Close() const;
 
 
 private:
-    int socketFileDescriptor;
+    int _socketFileDescriptor;
+
+    AddressFamily _addressFamily;
+    SocketType _socketType;
+    ProtocolType _protocolType;
+
 };
 
 

@@ -3,4 +3,6 @@ project(socket_tools)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(socket_tools main.cpp)
+add_executable(socket_tools
+        main.cpp
+        src/socket.h)
