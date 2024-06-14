@@ -29,8 +29,8 @@ void Socket::Listen(int backlog) const {
 
 }
 
-Socket Socket::Accept() const {
-    return Socket(AddressFamily::Route, SocketType::Rdm, ProtocolType::Kryptolan);
+Socket* Socket::Accept() const {
+    return new Socket(AddressFamily::Route, SocketType::Rdm, ProtocolType::Kryptolan);
 }
 
 int Socket::Send(const void *buffer, int len, SocketFlags socketFlags) const {

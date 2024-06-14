@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(socket_tools
         main.cpp
-        src/socket.h)
+        src/socket.h
+        src/socket.cpp
+)

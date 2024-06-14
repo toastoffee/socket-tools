@@ -30,7 +30,7 @@ enum class SocketFlags : int {
     ControlDataLost         = MSG_CTRUNC,
     WaitForAll              = MSG_WAITALL,
     DontWait                = MSG_DONTWAIT,
-    EOF                     = MSG_EOF,
+    Eof                     = MSG_EOF,
     WaitStream              = MSG_WAITSTREAM,
 };
 

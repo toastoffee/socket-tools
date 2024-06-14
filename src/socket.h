@@ -33,14 +33,13 @@ public:
 
     void Listen(int backlog) const;
 
-    Socket Accept() const;
+    Socket* Accept() const;
 
     int Send(const void* buffer, int len, SocketFlags socketFlags) const;
 
     int Receive(const void* buffer, int maxLen, SocketFlags socketFlags) const;
 
     void Close() const;
-
 
 private:
     int _socketFileDescriptor;
