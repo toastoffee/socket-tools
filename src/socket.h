@@ -15,6 +15,8 @@
 
 #include "socket_enum.h"
 
+#include <string>
+
 /*
  * 实现 Berkeley 套接字接口
  */
@@ -24,6 +26,10 @@ public:
     Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType);
 
     Socket(SocketType socketType, ProtocolType protocolType);
+
+    void Connect(std::string const &address, int port);
+
+    int Send(const void* buffer, int size, int socketFlags);
 
 
 private:
