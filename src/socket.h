@@ -13,11 +13,21 @@
 #ifndef SOCKET_TOOLS_SOCKET_H
 #define SOCKET_TOOLS_SOCKET_H
 
+#include "socket_enum.h"
 
-class socket{
+/*
+ * 实现 Berkeley 套接字接口
+ */
+class Socket{
+
 public:
+    Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType);
+
+    Socket(SocketType socketType, ProtocolType protocolType);
 
 
+private:
+    int socketFileDescriptor;
 };
 
 
