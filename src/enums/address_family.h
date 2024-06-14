@@ -18,7 +18,7 @@
 /*
  * 指定 Socket 类的实例可以使用的寻址方案
  */
-enum class AddressFamily : unsigned int {
+enum class AddressFamily : int {
     Unspecified     = AF_UNSPEC,            /* 未指定的地址族 */
     Unix            = AF_UNIX,              /* Unix 本地到主机地址 */
     InterNetwork    = AF_INET,              /* IP 版本 4 的地址 (UDP, TCP, etc.) */

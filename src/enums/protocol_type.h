@@ -15,7 +15,10 @@
 
 #include <netinet/in.h>
 
-enum class ProtocolType : unsigned int {
+/*
+ * 指定 Socket 类支持的协议
+ */
+enum class ProtocolType : int {
     IP                                = IPPROTO_IP,
     Icmp                              = IPPROTO_ICMP,
     Igmp                              = IPPROTO_IGMP,
@@ -70,6 +73,9 @@ enum class ProtocolType : unsigned int {
     IntegratedNetLayerSecurity        = IPPROTO_INLSP,
     IPWithEncryption                  = IPPROTO_SWIPE,
     NextHopResolution                 = IPPROTO_NHRP,
+
+    /* 55-57: Unassigned */
+
     IcmpV6                            = IPPROTO_ICMPV6,
     IPv6NoNextHeader                  = IPPROTO_NONE,
     IPv6DestinationOptions            = IPPROTO_DSTOPTS,
@@ -80,7 +86,52 @@ enum class ProtocolType : unsigned int {
     Kryptolan                         = IPPROTO_KRYPTOLAN,
     RemoteVirtualDisk                 = IPPROTO_RVD,
     PluribusPacketCore                = IPPROTO_IPPC,
+    AnyDistributedFS                  = IPPROTO_ADFS,
+    SatnetMonitoring                  = IPPROTO_SATMON,
+    VISA                              = IPPROTO_VISA,
+    PacketCoreUtility                 = IPPROTO_IPCV,
+    CompProtNetExecutive              = IPPROTO_CPNX,
+    CompProtHeartBeat                 = IPPROTO_CPHB,
+    WangSpanNetwork                   = IPPROTO_WSN,
+    PacketVideo                       = IPPROTO_PVP,
+    BackroomSatnetMonitoring          = IPPROTO_BRSATMON,
+    ND                                = IPPROTO_ND,
+    WIDEBANDMonitoring                = IPPROTO_WBMON,
+    WIDEBANDEXPAK                     = IPPROTO_WBEXPAK,
+    ISOCNLP                           = IPPROTO_EON,
+    VMTP                              = IPPROTO_VMTP,
+    SecureVMTP                        = IPPROTO_SVMTP,
+    BanyonVINES                       = IPPROTO_VINES,
+    TTP                               = IPPROTO_TTP,
+    NsfNetIGP                         = IPPROTO_IGP,
+    DissimilarGateway                 = IPPROTO_DGP,
+    TCF                               = IPPROTO_TCF,
+    CiscoIGRP                         = IPPROTO_IGRP,
+    OSPFIGP                           = IPPROTO_OSPFIGP,
+    StriteRPC                         = IPPROTO_SRPC,
+    LocusAddressResolution            = IPPROTO_LARP,
+    MulticastTransport                = IPPROTO_MTP,
+    AX25Frames                        = IPPROTO_AX25,
+    EncapsulatedIP                    = IPPROTO_IPEIP,
+    MobileIntControl                  = IPPROTO_MICP,
+    SemaphoreCommSecurity             = IPPROTO_SCCSP,
+    EthernetIPEncapsulation           = IPPROTO_ETHERIP,
+    EncapsulationHeader               = IPPROTO_ENCAP,
+    AnyPrivateEncryptedScheme         = IPPROTO_APES,
+    GMTP                              = IPPROTO_GMTP,
 
+    /* 101-252: Partly Unassigned */
+    ProtocolIndependentMcast          = IPPROTO_PIM,
+    PayloadCompression                = IPPROTO_IPCOMP,
+    PGM                               = IPPROTO_PGM,
+    SCTP                              = IPPROTO_SCTP,
+
+    /* 253-254: Experimentation and testing; 255: Reserved (RFC3692) */
+    DivertPseudoProtocol              = IPPROTO_DIVERT,
+    Raw                               = IPPROTO_RAW,
+
+    MAX                               = IPPROTO_MAX,
+    DONE                              = IPPROTO_DONE,
 };
 
 
