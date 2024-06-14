@@ -18,7 +18,7 @@
 /*
  * 指定 Socket 类的实例表示的套接字类型
  */
-enum SocketType{
+enum class SocketType : unsigned int {
     Stream      = SOCK_STREAM,      /* 支持可靠、双向、基于连接的字节流 */
     Dgram       = SOCK_DGRAM,       /* 支持数据报，即最大长度固定（通常很小）的无连接、不可靠消息 */
     Raw         = SOCK_RAW,         /* 支持对基础传输协议的访问 */

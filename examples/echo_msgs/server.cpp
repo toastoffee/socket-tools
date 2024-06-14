@@ -20,6 +20,8 @@ int main(){
     // creating socket
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 
+    unsigned int a = IPPROTO_UDP;
+
     // specifying the address
     sockaddr_in serverAddress;
     serverAddress.sin_family = AF_INET;
