@@ -14,7 +14,6 @@
 #define SOCKET_TOOLS_SOCKET_H
 
 #include "socket_enum.h"
-#include "ip_end_point.hpp"
 
 /*
  * 实现 Berkeley 套接字接口
@@ -25,9 +24,11 @@ public:
 
     Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType);
 
+    Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType, int socketFd);
+
     void Connect(const char *address, int port) const;
 
-    void Bind(IPEndPoint localEndPoint) const;
+    void Bind(const char *address, int port) const;
 
     void Listen(int backlog) const;
 

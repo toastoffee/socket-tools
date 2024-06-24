@@ -17,7 +17,7 @@
  * 补充信息
  */
 Socket::Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType) :
-_addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolType) {
+    _addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolType) {
 
     int addressFamilyId = static_cast<int>(addressFamily);
     int socketTypeid = static_cast<int>(socketType);
@@ -26,6 +26,9 @@ _addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolTy
     _socketFileDescriptor = socket(addressFamilyId, socketTypeid, protocolTypeId);
 }
 
+Socket::Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType, int socketFd) :
+    _addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolType), _socketFileDescriptor(socketFd) { }
+
 void Socket::Connect(const char *address, int port) const {
 
     sockaddr_in serverAddress{};
@@ -33,19 +36,27 @@ void Socket::Connect(const char *address, int port) const {
     serverAddress.sin_port = htons(port);
     serverAddress.sin_addr.s_addr = inet_addr(address);
 
-    int connectFlag = connect(_socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+    connect(_socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
 }
 
-void Socket::Bind(IPEndPoint localEndPoint) const {
+void Socket::Bind(const char *address, int port) const {
 
+    sockaddr_in localAddress{};
+    localAddress.sin_family = static_cast<int>(AddressFamily::InterNetwork);
+    localAddress.sin_port = htons(port);
+    localAddress.sin_addr.s_addr = inet_addr(address);
+
+    bind(_socketFileDescriptor, (struct sockaddr*)&localAddress, sizeof(localAddress));
 }
 
 void Socket::Listen(int backlog) const {
-
+    listen(_socketFileDescriptor, backlog);
 }
 
 Socket* Socket::Accept() const {
-    return new Socket(AddressFamily::Route, SocketType::Rdm, ProtocolType::Kryptolan);
+    int connSocketFileDescriptor = accept(_socketFileDescriptor, nullptr, nullptr);
+
+    return new Socket(_addressFamily, _socketType, _protocolType, connSocketFileDescriptor);
 }
 
 int Socket::Send(const void *buffer, int len, SocketFlags socketFlags) const {
@@ -60,3 +71,4 @@ int Socket::Receive(const void *buffer, int maxLen, SocketFlags socketFlags) con
 void Socket::Close() const {
 
 }
+
