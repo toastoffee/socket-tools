@@ -36,7 +36,7 @@ public:
 
     int Send(const void* buffer, int len, SocketFlags socketFlags) const;
 
-    int Receive(const void* buffer, int maxLen, SocketFlags socketFlags) const;
+    int Receive(void* buffer, int maxLen, SocketFlags socketFlags) const;
 
     void Close() const;
 

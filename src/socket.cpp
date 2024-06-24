@@ -60,15 +60,19 @@ Socket* Socket::Accept() const {
 }
 
 int Socket::Send(const void *buffer, int len, SocketFlags socketFlags) const {
-    return 0;
+    int socketFlagId = static_cast<int>(socketFlags);
+    int sendBytesLen = send(_socketFileDescriptor, buffer, len, socketFlagId);
+    return sendBytesLen;
 }
 
 
-int Socket::Receive(const void *buffer, int maxLen, SocketFlags socketFlags) const {
-    return 0;
+int Socket::Receive(void *buffer, int maxLen, SocketFlags socketFlags) const {
+    int socketFlagId = static_cast<int>(socketFlags);
+    int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, 0);
+    return recvBytesLen;
 }
 
 void Socket::Close() const {
-
+    
 }
 
