@@ -8,6 +8,9 @@
   ******************************************************************************
   */
 
+
+#include <arpa/inet.h>
+
 #include "socket.h"
 
 /*
@@ -23,8 +26,14 @@ _addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolTy
     _socketFileDescriptor = socket(addressFamilyId, socketTypeid, protocolTypeId);
 }
 
-void Socket::Connect(const std::string &address, int port) const {
+void Socket::Connect(const char *address, int port) const {
 
+    sockaddr_in serverAddress{};
+    serverAddress.sin_family = static_cast<int>(AddressFamily::InterNetwork);
+    serverAddress.sin_port = htons(port);
+    serverAddress.sin_addr.s_addr = inet_addr(address);
+
+    int connectFlag = connect(_socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
 }
 
 void Socket::Bind(IPEndPoint localEndPoint) const {

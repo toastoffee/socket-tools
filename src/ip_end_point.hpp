@@ -14,7 +14,7 @@
 #define SOCKET_TOOLS_IP_END_POINT_HPP
 
 class IPEndPoint {
-
+    
 };
 
 #endif //SOCKET_TOOLS_IP_END_POINT_HPP
