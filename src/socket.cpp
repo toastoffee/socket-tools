@@ -73,6 +73,6 @@ int Socket::Receive(void *buffer, int maxLen, SocketFlags socketFlags) const {
 }
 
 void Socket::Close() const {
-
+    shutdown(_socketFileDescriptor, SHUT_RDWR);
 }
 
