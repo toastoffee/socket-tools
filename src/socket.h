@@ -47,7 +47,6 @@ private:
     AddressFamily _addressFamily;
     SocketType _socketType;
     ProtocolType _protocolType;
-
 };
 
 

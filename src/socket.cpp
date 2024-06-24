@@ -13,8 +13,14 @@
 /*
  * 补充信息
  */
-Socket::Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType) {
+Socket::Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType) :
+_addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolType) {
 
+    int addressFamilyId = static_cast<int>(addressFamily);
+    int socketTypeid = static_cast<int>(socketType);
+    int protocolTypeId = static_cast<int>(protocolType);
+
+    _socketFileDescriptor = socket(addressFamilyId, socketTypeid, protocolTypeId);
 }
 
 void Socket::Connect(const std::string &address, int port) const {
