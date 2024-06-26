@@ -8,6 +8,7 @@
   ******************************************************************************
   */
 
+#define DEFAULT_TIME_OUT 5
 
 #include <arpa/inet.h>
 
@@ -24,10 +25,13 @@ Socket::Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType 
     int protocolTypeId = static_cast<int>(protocolType);
 
     _socketFileDescriptor = socket(addressFamilyId, socketTypeid, protocolTypeId);
+    SetTimeOut(DEFAULT_TIME_OUT);
 }
 
 Socket::Socket(AddressFamily addressFamily, SocketType socketType, ProtocolType protocolType, int socketFd) :
-    _addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolType), _socketFileDescriptor(socketFd) { }
+    _addressFamily(addressFamily), _socketType(socketType), _protocolType(protocolType), _socketFileDescriptor(socketFd) {
+    SetTimeOut(DEFAULT_TIME_OUT);
+}
 
 void Socket::Connect(const char *address, int port) const {
 
@@ -36,7 +40,7 @@ void Socket::Connect(const char *address, int port) const {
     serverAddress.sin_port = htons(port);
     serverAddress.sin_addr.s_addr = inet_addr(address);
 
-    connect(_socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+    int status = connect(_socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
 }
 
 void Socket::Bind(const char *address, int port) const {
@@ -72,7 +76,20 @@ int Socket::Receive(void *buffer, int maxLen, SocketFlags socketFlags) const {
     return recvBytesLen;
 }
 
+
+void Socket::SetTimeOut(int seconds) const{
+    struct timeval tv{};
+    tv.tv_sec = seconds;
+    tv.tv_usec = 0;
+
+    setsockopt(_socketFileDescriptor, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv));
+    setsockopt(_socketFileDescriptor, SOL_SOCKET, SO_SNDTIMEO, (char*)&tv, sizeof(tv));
+}
+
 void Socket::Close() const {
     shutdown(_socketFileDescriptor, SHUT_RDWR);
 }
 
+void Socket::AsyncConnect(const char *address, int port, std::function<void()> onConnected) const {
+
+}

@@ -8,7 +8,8 @@ int main() {
     Socket clientSocket(AddressFamily::InterNetwork, SocketType::Stream, ProtocolType::Tcp);
 
     // connect
-    clientSocket.Connect("127.0.0.1", 8080);
+//    clientSocket.Connect("120.241.47.71", 64508);
+    clientSocket.Connect("127.0.0.1", 8888);
 
     std::cout << "[client] connect to server successfully" << std::endl;
 
