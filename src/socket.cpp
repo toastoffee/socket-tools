@@ -11,6 +11,8 @@
 #define DEFAULT_TIME_OUT 5
 
 #include <arpa/inet.h>
+#include <thread>
+#include <iostream>
 
 #include "socket.h"
 
@@ -91,5 +93,25 @@ void Socket::Close() const {
 }
 
 void Socket::AsyncConnect(const char *address, int port, std::function<void()> onConnected) const {
+
+    std::thread connectThread = std::thread([this, address, port, onConnected](){
+        sockaddr_in serverAddress{};
+        serverAddress.sin_family = static_cast<int>(AddressFamily::InterNetwork);
+        serverAddress.sin_port = htons(port);
+        serverAddress.sin_addr.s_addr = inet_addr(address);
+
+        int status = connect(_socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+
+        if(status == -1){
+            std::cout << "connect to host failed" << std::endl;
+            return 0;
+        }
+
+        onConnected();
+
+        return 0;
+    });
+
+    connectThread.detach();
 
 }
