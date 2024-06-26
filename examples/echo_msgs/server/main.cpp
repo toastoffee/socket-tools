@@ -34,7 +34,7 @@ int main() {
         char buffer[1024] = { 0 };
         connSocket->Receive(buffer, sizeof(buffer), SocketFlags::None);
 
-        std::cout << "Message from client: " << buffer << std::endl;
+        std::cout << "[server] Message from client: " << buffer << std::endl;
 
         // send
         connSocket->Send(buffer, strlen(buffer), SocketFlags::None);

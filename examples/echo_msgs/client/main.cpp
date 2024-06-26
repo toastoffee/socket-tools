@@ -10,6 +10,8 @@ int main() {
     // connect
     clientSocket.Connect("127.0.0.1", 8080);
 
+    std::cout << "[client] connect to server successfully" << std::endl;
+
     while(true){
         std::string msg;
         std::cin >> msg;
@@ -21,7 +23,7 @@ int main() {
         char buffer[1024] = {0};
         clientSocket.Receive(buffer, sizeof(buffer), SocketFlags::None);
 
-        std::cout << "[msg receive from server] " << buffer << std::endl;
+        std::cout << "[client] Message from client: " << buffer << std::endl;
     }
 
     return 0;
