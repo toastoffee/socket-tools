@@ -98,12 +98,17 @@ void Socket::AsyncAccept(const std::function<void(Socket *)> &onAccepted) const 
     std::thread acceptThread([this, onAccepted](){
 
         int connSocketFileDescriptor = accept(_socketFileDescriptor, nullptr, nullptr);
+
+        if(connSocketFileDescriptor == -1){
+            std::cout << "accept from client failed" << std::endl;
+            return;
+        }
+
         Socket *connSocket = new Socket(_addressFamily, _socketType, _protocolType, connSocketFileDescriptor);
 
-        onAccepted(connSocket);
+//        onAccepted(connSocket);
 
     });
-
 
 }
 

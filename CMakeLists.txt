@@ -8,12 +8,17 @@ add_executable(socket_tools
         src/socket.cpp
 )
 
-add_executable(echo_client
-        examples/echo_msgs/client/main.cpp
-        src/socket.cpp
-)
+#add_executable(echo_client
+#        examples/echo_msgs/client/main.cpp
+#        src/socket.cpp
+#)
+#
+#add_executable(echo_server
+#        examples/echo_msgs/server/main.cpp
+#        src/socket.cpp
+#)
 
-add_executable(echo_server
-        examples/echo_msgs/server/main.cpp
+add_executable(chatroom_server
+        examples/async_chatroom/server/main.cpp
         src/socket.cpp
 )

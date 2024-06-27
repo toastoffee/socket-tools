@@ -38,6 +38,7 @@ int main() {
 
         // send
         connSocket->Send(buffer, strlen(buffer), SocketFlags::None);
+
     }
 
     return 0;
