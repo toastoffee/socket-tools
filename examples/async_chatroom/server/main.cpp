@@ -16,7 +16,7 @@
 struct ClientState{
 public:
     Socket *socket;
-    char readBuf[1024];
+    char *readBuf;
 };
 
 std::map<Socket*, ClientState> clients;
@@ -48,6 +48,8 @@ void AcceptCallback(Socket* connSocket){
     std::cout << "[server] accept" << std::endl;
 
     ClientState state{connSocket};
+    state.readBuf = new char[1024];
+
     clients.insert(std::pair<Socket*, ClientState>(connSocket, state));
 
     // receive Data from client

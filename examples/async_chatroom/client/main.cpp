@@ -28,7 +28,6 @@ int main() {
     while(true){
         if(startSend){
             std::string msg;
-            std::cout << "[client] input a msg to sent:";
             std::cin >> msg;
 
             // send
@@ -45,15 +44,14 @@ void ConnectionCallback(){
     startSend = true;
 
     // start receive
-    char buffer[1024] = {0};
+    char *buffer = new char[1024];
     clientSocket.AsyncReceive(buffer, sizeof(buffer), ReceiveCallback);
 
 }
 
 void ReceiveCallback(void *buffer){
-    std::cout << "[client] msg from server:" << (char*)buffer << std::endl;
+    std::cout << "\n[client] msg from server:" << (char*)buffer << std::endl;
 
     // continue receive
-    memset(buffer, 0, sizeof(buffer));
-    clientSocket.AsyncReceive(buffer, 1024, ReceiveCallback);
+    clientSocket.AsyncReceive(buffer, sizeof(buffer),ReceiveCallback);
 }

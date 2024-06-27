@@ -8,7 +8,7 @@
   ******************************************************************************
   */
 
-#define DEFAULT_TIME_OUT 5
+#define DEFAULT_TIME_OUT 50
 
 #include <arpa/inet.h>
 #include <thread>
@@ -159,16 +159,14 @@ int Socket::Receive(void *buffer, int maxLen, SocketFlags socketFlags) const {
 }
 
 
-void Socket::AsyncReceive(void *buffer, int maxLen, const std::function<void(void *)> &onReceived,
+void Socket::AsyncReceive(void* buffer, int maxLen, const std::function<void(void *)> &onReceived,
                           SocketFlags socketFlags) const {
 
     int socketFlagId = static_cast<int>(socketFlags);
 
-    std::thread recvThread([this, onReceived, socketFlagId](){
-//        int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, 0);
+    std::thread recvThread([this, onReceived, socketFlagId, buffer, maxLen](){
 
-        char buf[1024] = {0};
-        int recvBytesLen = recv(_socketFileDescriptor, buf, strlen(buf), socketFlagId);
+        int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, socketFlagId);
 
         if(recvBytesLen == -1){
             std::cout << "msg receive from host failed" << std::endl;
@@ -176,19 +174,10 @@ void Socket::AsyncReceive(void *buffer, int maxLen, const std::function<void(voi
             return;
         }
 
-        onReceived(buf);
+        onReceived(buffer);
+
         return;
     });
 
     recvThread.detach();
-
-//        int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, 0);
-//
-//        if(recvBytesLen == -1){
-//            std::cout << "msg receive from host failed" << std::endl;
-//            return;
-//        }
-//
-//        onReceived(buffer);
-
 }
