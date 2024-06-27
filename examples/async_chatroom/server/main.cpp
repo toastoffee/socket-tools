@@ -73,5 +73,4 @@ void ReceiveCallback(void* buffer, ClientState state){
     clientSocket->AsyncReceive(state.readBuf, sizeof(state.readBuf), [state](void* buf){
         ReceiveCallback(buf, state);
     });
-
 }
