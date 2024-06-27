@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include <thread>
 #include <iostream>
+#include <cerrno>
 
 #include "socket.h"
 
@@ -71,14 +72,6 @@ int Socket::Send(const void *buffer, int len, SocketFlags socketFlags) const {
     return sendBytesLen;
 }
 
-
-int Socket::Receive(void *buffer, int maxLen, SocketFlags socketFlags) const {
-    int socketFlagId = static_cast<int>(socketFlags);
-    int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, 0);
-    return recvBytesLen;
-}
-
-
 void Socket::SetTimeOut(int seconds) const{
     struct timeval tv{};
     tv.tv_sec = seconds;
@@ -106,10 +99,11 @@ void Socket::AsyncAccept(const std::function<void(Socket *)> &onAccepted) const 
 
         Socket *connSocket = new Socket(_addressFamily, _socketType, _protocolType, connSocketFileDescriptor);
 
-//        onAccepted(connSocket);
+        onAccepted(connSocket);
 
     });
 
+    acceptThread.detach();
 }
 
 
@@ -158,22 +152,43 @@ void Socket::AsyncSend(const void *buffer, int len, const std::function<void()> 
     sendThread.detach();
 }
 
+int Socket::Receive(void *buffer, int maxLen, SocketFlags socketFlags) const {
+    int socketFlagId = static_cast<int>(socketFlags);
+    int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, 0);
+    return recvBytesLen;
+}
+
+
 void Socket::AsyncReceive(void *buffer, int maxLen, const std::function<void(void *)> &onReceived,
                           SocketFlags socketFlags) const {
 
     int socketFlagId = static_cast<int>(socketFlags);
 
-    std::thread recvThread([this, buffer, maxLen, socketFlagId, onReceived](){
-        int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, socketFlagId);
+    std::thread recvThread([this, onReceived, socketFlagId](){
+//        int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, 0);
+
+        char buf[1024] = {0};
+        int recvBytesLen = recv(_socketFileDescriptor, buf, strlen(buf), socketFlagId);
 
         if(recvBytesLen == -1){
             std::cout << "msg receive from host failed" << std::endl;
+            std::cout << strerror(errno) << std::endl;
             return;
         }
 
-        onReceived(buffer);
+        onReceived(buf);
         return;
     });
 
     recvThread.detach();
+
+//        int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, 0);
+//
+//        if(recvBytesLen == -1){
+//            std::cout << "msg receive from host failed" << std::endl;
+//            return;
+//        }
+//
+//        onReceived(buffer);
+
 }

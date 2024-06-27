@@ -13,30 +13,47 @@
 #include "../../../src/socket.h"
 
 
+void ConnectionCallback();
+void ReceiveCallback(void *buffer);
+
+bool startSend = false;
+
+Socket clientSocket(AddressFamily::InterNetwork, SocketType::Stream, ProtocolType::Tcp);
+
 int main() {
 
-    Socket clientSocket(AddressFamily::InterNetwork, SocketType::Stream, ProtocolType::Tcp);
+    clientSocket.AsyncConnect("127.0.0.1", 8888, ConnectionCallback);
 
-    // connect
-//    clientSocket.Connect("120.241.47.71", 64508);
-    clientSocket.AsyncConnect("127.0.0.1", 8888);
-
-    std::cout << "[client] connect to server successfully" << std::endl;
 
     while(true){
-        std::string msg;
-        std::cin >> msg;
+        if(startSend){
+            std::string msg;
+            std::cout << "[client] input a msg to sent:";
+            std::cin >> msg;
 
-        // send
-        clientSocket.Send(msg.c_str(), strlen(msg.c_str()), SocketFlags::None);
-
-        // receive
-        char buffer[1024] = {0};
-        clientSocket.Receive(buffer, sizeof(buffer), SocketFlags::None);
-
-        std::cout << "[client] Message from client: " << buffer << std::endl;
-
+            // send
+            clientSocket.Send(msg.c_str(), strlen(msg.c_str()), SocketFlags::None);
+        }
     }
 
     return 0;
+}
+
+void ConnectionCallback(){
+    std::cout << "[client] connect to server successfully" << std::endl;
+
+    startSend = true;
+
+    // start receive
+    char buffer[1024] = {0};
+    clientSocket.AsyncReceive(buffer, sizeof(buffer), ReceiveCallback);
+
+}
+
+void ReceiveCallback(void *buffer){
+    std::cout << "[client] msg from server:" << (char*)buffer << std::endl;
+
+    // continue receive
+    memset(buffer, 0, sizeof(buffer));
+    clientSocket.AsyncReceive(buffer, 1024, ReceiveCallback);
 }

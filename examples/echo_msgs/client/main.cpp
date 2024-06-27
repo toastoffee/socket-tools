@@ -24,7 +24,7 @@ int main() {
         char buffer[1024] = {0};
         clientSocket.Receive(buffer, sizeof(buffer), SocketFlags::None);
 
-        std::cout << "[client] Message from client: " << buffer << std::endl;
+        std::cout << "[client] Message from server: " << buffer << std::endl;
     }
 
     return 0;

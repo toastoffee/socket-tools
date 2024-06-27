@@ -22,3 +22,8 @@ add_executable(chatroom_server
         examples/async_chatroom/server/main.cpp
         src/socket.cpp
 )
+
+add_executable(chatroom_client
+        examples/async_chatroom/client/main.cpp
+        src/socket.cpp
+)
