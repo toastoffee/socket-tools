@@ -9,7 +9,7 @@ int main() {
 
     // connect
 //    clientSocket.Connect("120.241.47.71", 64508);
-    clientSocket.Connect("127.0.0.1", 8888);
+    clientSocket.AsyncConnect("127.0.0.1", 8888);
 
     std::cout << "[client] connect to server successfully" << std::endl;
 

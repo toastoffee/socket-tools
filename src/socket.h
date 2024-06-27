@@ -34,8 +34,7 @@ public:
     Socket &&operator=(Socket &&) = delete;
 
     void Connect(const char *address, int port) const;
-
-    void AsyncConnect(const char *address, int port, std::function<void()> onConnected = [](){}) const;
+    void AsyncConnect(const char *address, int port, const std::function<void()>& onConnected = [](){}) const;
 
     void Bind(const char *address, int port) const;
 
@@ -43,9 +42,11 @@ public:
 
     Socket* Accept() const;
 
-    int Send(const void* buffer, int len, SocketFlags socketFlags) const;
+    int Send(const void* buffer, int len, SocketFlags socketFlags = SocketFlags::None) const;
+    void AsyncSend(const void* buffer, int len, const std::function<void()>& onSent = [](){}, SocketFlags socketFlags = SocketFlags::None) const;
 
-    int Receive(void* buffer, int maxLen, SocketFlags socketFlags) const;
+    int Receive(void* buffer, int maxLen, SocketFlags socketFlags = SocketFlags::None) const;
+    void AsyncReceive(void* buffer, int maxLen, const std::function<void(void *)>& onReceived, SocketFlags socketFlags = SocketFlags::None) const;
 
     void SetTimeOut(int seconds) const;
 
