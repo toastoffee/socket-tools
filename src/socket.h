@@ -41,6 +41,7 @@ public:
     void Listen(int backlog) const;
 
     Socket* Accept() const;
+    void AsyncAccept(const std::function<void(Socket*)>& onAccepted) const;
 
     int Send(const void* buffer, int len, SocketFlags socketFlags = SocketFlags::None) const;
     void AsyncSend(const void* buffer, int len, const std::function<void()>& onSent = [](){}, SocketFlags socketFlags = SocketFlags::None) const;

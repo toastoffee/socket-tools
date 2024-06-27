@@ -92,6 +92,23 @@ void Socket::Close() const {
     shutdown(_socketFileDescriptor, SHUT_RDWR);
 }
 
+
+void Socket::AsyncAccept(const std::function<void(Socket *)> &onAccepted) const {
+
+    std::thread acceptThread([this, onAccepted](){
+
+        int connSocketFileDescriptor = accept(_socketFileDescriptor, nullptr, nullptr);
+        Socket *connSocket = new Socket(_addressFamily, _socketType, _protocolType, connSocketFileDescriptor);
+
+        onAccepted(connSocket);
+
+    });
+
+
+}
+
+
+
 void Socket::AsyncConnect(const char *address, int port, const std::function<void()>& onConnected) const {
 
     sockaddr_in serverAddress{};
@@ -99,18 +116,18 @@ void Socket::AsyncConnect(const char *address, int port, const std::function<voi
     serverAddress.sin_port = htons(port);
     serverAddress.sin_addr.s_addr = inet_addr(address);
 
-    std::thread connectThread = std::thread([this, serverAddress, onConnected](){
+    std::thread connectThread([this, serverAddress, onConnected](){
 
         int status = connect(_socketFileDescriptor, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
 
         if(status == -1){
             std::cout << "connect to host failed" << std::endl;
-            return 0;
+            return;
         }
 
         onConnected();
 
-        return 0;
+        return;
     });
 
     connectThread.detach();
@@ -120,17 +137,17 @@ void Socket::AsyncConnect(const char *address, int port, const std::function<voi
 void Socket::AsyncSend(const void *buffer, int len, const std::function<void()> &onSent, SocketFlags socketFlags) const {
     int socketFlagId = static_cast<int>(socketFlags);
 
-    std::thread sendThread = std::thread([this, buffer, len, socketFlagId, onSent](){
+    std::thread sendThread([this, buffer, len, socketFlagId, onSent](){
         int sendBytesLen = send(_socketFileDescriptor, buffer, len, socketFlagId);
 
         if(sendBytesLen == -1){
             std::cout << "msg sent to host failed" << std::endl;
-            return 0;
+            return;
         }
 
         onSent();
 
-        return 0;
+        return;
     });
 
     sendThread.detach();
@@ -141,18 +158,17 @@ void Socket::AsyncReceive(void *buffer, int maxLen, const std::function<void(voi
 
     int socketFlagId = static_cast<int>(socketFlags);
 
-    std::thread recvThread = std::thread([this, buffer, maxLen, socketFlagId, onReceived](){
+    std::thread recvThread([this, buffer, maxLen, socketFlagId, onReceived](){
         int recvBytesLen = recv(_socketFileDescriptor, buffer, maxLen, socketFlagId);
 
         if(recvBytesLen == -1){
             std::cout << "msg receive from host failed" << std::endl;
-            return 0;
+            return;
         }
 
         onReceived(buffer);
-        return 0;
+        return;
     });
 
     recvThread.detach();
 }
-
