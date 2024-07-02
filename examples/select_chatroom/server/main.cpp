@@ -134,41 +134,21 @@ int main() {
                 continue;
             }
 
-            
-        }
-
-        for(int i = 0; i < MAX_SIZE; i++){
-            if(nCount == 0){
-                break;
-            }
-            if(!FD_ISSET(allfds[i], &readFds)){
-                continue;
-            }
-
-            // listen that client has connected
-            if(allfds[i] == listenSocket.GetFd()) {
+            // listen the client has connected
+            if(socket->GetFd() == listenSocket.GetFd()){
                 nCount--;
-                conn = listenSocket.Accept();
+                Socket* conn = listenSocket.Accept();
+                sockets.push_back(conn);
+            }else{
+                // listen the client has sent msg
+                nCount--;
 
-                for (int n = 0; n < MAX_SIZE; n++) {
-                    if (allfds[n] == -1) {
-                        allfds[n] = conn->GetFd();
-                        maxFd = maxFd > conn->GetFd() ? maxFd : conn->GetFd();
-                        index = index > n ? index : n;
-                        break;
-                    }
-                }
-            }
-            else{   // listen that client has sent msg
                 memset(msg, 0, sizeof(msg));
-                recv(allfds[i], msg, MAX_SIZE, 0);
-
-                std::cout << msg << std::endl;
-
-                send(allfds[i], msg, MAX_SIZE, 0);
+                socket->Receive(msg, MAX_SIZE);
+                std::cout <<"[server] msg from client:" << msg << std::endl;
+                socket->Send(msg, MAX_SIZE);
             }
         }
-
     }
 
     listenSocket.Close();

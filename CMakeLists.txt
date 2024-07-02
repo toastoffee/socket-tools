@@ -31,10 +31,12 @@ add_executable(socket_tools
 
 add_executable(chatroom_server
         examples/select_chatroom/server/main.cpp
+        src/socket_set.cpp
         src/socket.cpp
 )
 
 add_executable(chatroom_client
         examples/select_chatroom/client/main.cpp
         src/socket.cpp
+        src/socket_set.cpp
 )
