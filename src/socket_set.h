@@ -34,7 +34,7 @@ public:
     SocketSet();
     ~SocketSet();
 
-    int Select(SelectMode mode, struct timeval *timeout);
+    int Select(SelectMode mode, struct timeval *timeout = nullptr);
 
     void Remove(Socket* socket);
     int IsInSet(Socket* socket);
