@@ -18,12 +18,22 @@ add_executable(socket_tools
 #        src/socket.cpp
 #)
 
+#add_executable(chatroom_server
+#        examples/async_chatroom/server/main.cpp
+#        src/socket.cpp
+#)
+
+#add_executable(chatroom_client
+#        examples/async_chatroom/client/main.cpp
+#        src/socket.cpp
+#)
+
 add_executable(chatroom_server
-        examples/async_chatroom/server/main.cpp
+        examples/select_chatroom/server/main.cpp
         src/socket.cpp
 )
 
 add_executable(chatroom_client
-        examples/async_chatroom/client/main.cpp
+        examples/select_chatroom/client/main.cpp
         src/socket.cpp
 )
