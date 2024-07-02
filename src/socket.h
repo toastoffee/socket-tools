@@ -53,6 +53,8 @@ public:
 
     void Close() const;
 
+    int GetFd() const;
+
 private:
     int _socketFileDescriptor;
 

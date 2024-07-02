@@ -181,3 +181,7 @@ void Socket::AsyncReceive(void* buffer, int maxLen, const std::function<void(voi
 
     recvThread.detach();
 }
+
+int Socket::GetFd() const {
+    return _socketFileDescriptor;
+}
