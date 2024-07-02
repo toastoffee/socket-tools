@@ -11,8 +11,10 @@
 #include <iostream>
 #include <map>
 #include <sys/select.h>
+#include <arpa/inet.h>
 
 #include "../../../src/socket.h"
+
 
 #define MAX_SIZE 1024
 
@@ -30,6 +32,7 @@ int main() {
 
     int maxFd = -1;
     fd_set readFds;
+    char msg[MAX_SIZE];
 
     int allfds[MAX_SIZE];
     memset(allfds, -1, sizeof(allfds));
@@ -80,10 +83,18 @@ int main() {
                 }
             }
             else{   // listen that client has sent msg
+                memset(msg, 0, sizeof(msg));
+                recv(allfds[i], msg, MAX_SIZE, 0);
 
+                std::cout << msg << std::endl;
 
+                send(allfds[i], msg, MAX_SIZE, 0);
             }
         }
 
     }
+
+    listenSocket.Close();
+
+    return 0;
 }
