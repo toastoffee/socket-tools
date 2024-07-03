@@ -113,6 +113,8 @@ int main() {
 
     std::cout << "[server] chatroom start successfully" << std::endl;
 
+    sockets.push_back(&listenSocket);
+
     // waiting...
     while(true){
         socketSet.Clear();
